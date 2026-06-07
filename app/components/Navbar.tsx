@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 
 interface NavLink {
@@ -26,9 +27,21 @@ const Navbar = () => {
       */}
       <div className="w-full pl-6 pr-4 h-16 flex items-center justify-start gap-12">
         
-        {/* School Logo */}
-        <Link href="/" className="font-bold text-xl tracking-tight hover:text-blue-200 transition shrink-0 block text-left">
-          Sibanye Centre For Special Needs
+        {/* School logo + name — grouped so they sit side by side */}
+        <Link
+          href="/"
+          className="flex items-center gap-3 shrink-0 hover:opacity-90 transition"
+        >
+          <Image
+            src="/images/logo_small.jpg"
+            alt=""
+            width={40}
+            height={40}
+            className="h-10 w-10 object-contain"
+          />
+          <span className="font-bold text-xl tracking-tight text-left leading-tight">
+            Sibanye Centre For Special Needs
+          </span>
         </Link>
         
         {/* Navigation Links */}
