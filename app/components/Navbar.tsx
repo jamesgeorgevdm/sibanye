@@ -19,7 +19,7 @@ const Navbar = () => {
   const pathname = usePathname()
 
   return (
-    <nav className="fixed top-0 left-0 right-0 h-16 bg-blue-900 text-white shadow-md z-50 w-full block">
+    <nav className="fixed top-0 left-0 right-0 h-16 bg-sky-700 text-white shadow-md z-50 w-full block">
       {/* - w-full: Forces the container to span 100% of the screen width.
         - justify-start: Slams all text to the far left.
         - pl-6: Adds a tiny bit of breathing room from the literal glass edge of your monitor.

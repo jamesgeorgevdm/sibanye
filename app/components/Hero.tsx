@@ -16,12 +16,12 @@ export default function Hero() {
 
       {/* Semi-transparent overlay so white text stays readable on any photo */}
       <div
-        className="absolute inset-0 bg-blue-900/65"
+        className="absolute inset-0 bg-white"
         aria-hidden="true"
       />
 
       {/* Foreground content — `z-10` sits above the image and overlay */}
-      <div className="relative z-10 text-center text-white px-6 pt-16 max-w-4xl mx-auto">
+      <div className="relative z-10 text-center text-sky-700 px-6 pt-16 max-w-4xl mx-auto">
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-4">
           Sibanye Centre For Special Needs
         </h1>

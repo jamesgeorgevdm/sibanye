@@ -1,24 +1,29 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-
-const STORAGE_KEY = 'sibanye-intro-seen'
+import { usePathname } from 'next/navigation'
+import { INTRO_COMPLETE_EVENT, INTRO_STORAGE_KEY } from '../constants/intro'
 
 export default function IntroSplash() {
+  const pathname = usePathname()
   const [show, setShow] = useState(false)
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    if (localStorage.getItem(STORAGE_KEY) === 'true') {
-      return
-    }
+    if (pathname !== '/') return
+    if (localStorage.getItem(INTRO_STORAGE_KEY) === 'true') return
 
     setShow(true)
+    setVisible(false)
 
     const fadeInTimer = setTimeout(() => setVisible(true), 50)
-    const fadeOutTimer = setTimeout(() => setVisible(false), 2500)
+    const fadeOutTimer = setTimeout(() => {
+      // Reveal page content underneath while splash fades out
+      window.dispatchEvent(new Event(INTRO_COMPLETE_EVENT))
+      setVisible(false)
+    }, 2500)
     const hideTimer = setTimeout(() => {
-      localStorage.setItem(STORAGE_KEY, 'true')
+      localStorage.setItem(INTRO_STORAGE_KEY, 'true')
       setShow(false)
     }, 3500)
 
@@ -27,7 +32,7 @@ export default function IntroSplash() {
       clearTimeout(fadeOutTimer)
       clearTimeout(hideTimer)
     }
-  }, [])
+  }, [pathname])
 
   if (!show) return null
 
@@ -39,7 +44,6 @@ export default function IntroSplash() {
       style={{ zIndex: 9999 }}
       aria-hidden="true"
     >
-      {/* Plain img — bypasses Next.js optimizer, which was flattening this PNG to white at 256px */}
       <img
         src="/images/logo_big.png"
         alt="Sibanye Centre For Special Needs"
