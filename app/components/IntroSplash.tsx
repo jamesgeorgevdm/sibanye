@@ -38,7 +38,7 @@ export default function IntroSplash() {
 
   return (
     <div
-      className={`fixed inset-0 flex items-center justify-center bg-blue-900 transition-opacity duration-700 ${
+      className={`fixed inset-0 flex items-center justify-center transition-opacity duration-700 ${
         visible ? 'opacity-100' : 'opacity-0'
       }`}
       style={{ zIndex: 9999 }}
