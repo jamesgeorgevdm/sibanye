@@ -1,3 +1,9 @@
+// All gallery content lives here — images and videos.
+// To add a photo: drop the file into public/images/gallery/life/ or /events/
+// and add a new imagePath() call to the relevant album's images array below.
+// To add a video: put the .mp4 in public/images/gallery/videos/ and add an
+// entry to videoShowcase.videos (there's a commented example at the bottom).
+
 export type GalleryImage = {
   src: string
   alt: string

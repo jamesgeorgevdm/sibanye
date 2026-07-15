@@ -1,5 +1,13 @@
 'use client'
 
+// Video showcase section at the bottom of the Gallery page.
+// If videoShowcase.videos is empty (the default), shows a "Videos coming soon" placeholder
+// inside the puzzle frame. Once videos are added in app/data/gallery.ts they'll appear
+// here automatically with Previous/Next controls and a title list below.
+//
+// Videos are loaded with preload="metadata" — only the first frame/duration is fetched
+// until the user actually hits play, which keeps the page fast.
+
 import { useCallback, useState } from 'react'
 import type { VideoShowcase } from '../data/gallery'
 import PuzzleBorder, { PUZZLE_CARD_INSET } from './PuzzleBorder'

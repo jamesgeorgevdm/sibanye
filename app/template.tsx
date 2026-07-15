@@ -1,51 +1,31 @@
 'use client'
 
+// Next.js template.tsx re-mounts on every client-side navigation (unlike layout.tsx which persists).
+// That makes it the right place for per-page transition animations.
+//
+// Logic: the first page load of a browser session has no fade (the intro splash handles that).
+// Every subsequent navigation within the same tab gets a 700ms fade-in.
+// We track "has this tab been used" with a sessionStorage flag so refreshing the
+// page resets it correctly.
+
 import { useEffect, useState, type ReactNode } from 'react'
 import { usePathname } from 'next/navigation'
-import { INTRO_COMPLETE_EVENT, INTRO_STORAGE_KEY } from './constants/intro'
 
 const SESSION_KEY = 'sibanye-page-mounted'
 
-type DisplayMode = 'loading' | 'hidden-for-intro' | 'instant' | 'animate'
-
 export default function Template({ children }: { children: ReactNode }) {
   const pathname = usePathname()
-  const [mode, setMode] = useState<DisplayMode>('loading')
+  const [animate, setAnimate] = useState(false)
 
   useEffect(() => {
-    const introSeen = localStorage.getItem(INTRO_STORAGE_KEY) === 'true'
     const sessionStarted = !!sessionStorage.getItem(SESSION_KEY)
-
-    // Intro always takes priority — even if sessionStorage exists from a prior visit
-    if (pathname === '/' && !introSeen) {
-      setMode('hidden-for-intro')
-
-      const onIntroComplete = () => {
-        setMode('instant')
-        sessionStorage.setItem(SESSION_KEY, '1')
-      }
-
-      window.addEventListener(INTRO_COMPLETE_EVENT, onIntroComplete)
-      return () => window.removeEventListener(INTRO_COMPLETE_EVENT, onIntroComplete)
-    }
-
-    if (sessionStarted) {
-      setMode('animate')
-      return
-    }
-
-    setMode('instant')
+    setAnimate(sessionStarted)
     sessionStorage.setItem(SESSION_KEY, '1')
   }, [pathname])
 
-  // Fully hide page content during intro — opacity-0 still paints underneath the splash
-  if (mode === 'loading' || mode === 'hidden-for-intro') {
-    return <div className="hidden">{children}</div>
-  }
-
-  if (mode === 'instant') {
-    return <div>{children}</div>
-  }
-
-  return <div className="animate-page-fade-in">{children}</div>
+  return (
+    <div className={animate ? 'animate-page-fade-in' : ''}>
+      {children}
+    </div>
+  )
 }

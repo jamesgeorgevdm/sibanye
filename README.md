@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sibanye Centre For Special Needs — Website
 
-## Getting Started
+Next.js 16 website for Sibanye Centre For Special Needs, a school for children and young adults mainly on the Autism Spectrum and other learning disabilities, based in Gqeberha, South Africa.
 
-First, run the development server:
+## Tech stack
+
+- **Next.js 16** (App Router) + **TypeScript**
+- **Tailwind CSS v4**
+- **Neon** (serverless Postgres) — review storage
+- **Nodemailer** — contact form emails via Gmail
+- **Vercel AI SDK** + **Google Gemini 2.5 Flash** — chatbot
+
+## Running locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Copy `.env.local` and fill in:
 
-## Learn More
+| Variable | Purpose |
+|---|---|
+| `DATABASE_URL` | Neon Postgres connection string |
+| `EMAIL_USER` | Gmail address for contact form |
+| `EMAIL_PASS` | Gmail app password (not your account password) |
+| `ADMIN_SECRET` | Secret header value to generate review tokens |
+| `GOOGLE_GENERATIVE_AI_API_KEY` | Gemini API key for the chatbot |
+| `NEXT_PUBLIC_SITE_URL` | Full site URL (used in review token links) |
 
-To learn more about Next.js, take a look at the following resources:
+## Database setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Run `schema.sql` once in the Neon SQL editor. It creates the `reviews` and `review_tokens` tables.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Review system
 
-## Deploy on Vercel
+Reviews are token-gated — visitors can't just leave a review by navigating to `/leave-review`. You generate a one-time link via the admin endpoint:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+curl -X POST https://yoursite.com/api/admin/generate-token \
+  -H "x-admin-secret: YOUR_ADMIN_SECRET" \
+  -H "Content-Type: application/json" \
+  -d '{"event_label": "End of Year 2025", "days_valid": 30}'
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The response includes a `url` you can send to families.
+
+## Adding gallery content
+
+**Images** — drop photos into `public/images/gallery/life/` or `public/images/gallery/events/` then add entries in `app/data/gallery.ts`.
+
+**Videos** — add `.mp4` files to `public/images/gallery/videos/` and uncomment / add entries in the `videoShowcase.videos` array in `app/data/gallery.ts`.
+
+## Project structure
+
+```
+app/
+  page.tsx              Home (Hero + Reviews)
+  about/                About sections (mission, activities, schedule, values)
+  gallery/              Photo albums + video showcase
+  contact/              Contact form → sends email via Gmail
+  leave-review/         Token-gated review submission form
+  components/           Shared UI components
+  api/
+    chat/               Gemini chatbot endpoint
+    contact/            Nodemailer email sender
+    reviews/            GET all reviews / POST a new review
+    validate-token/     Checks whether a review token is still valid
+    admin/generate-token/ Creates a new one-time review link
+  lib/
+    db.ts               Neon SQL client
+    types.ts            Shared TypeScript types
+  data/
+    gallery.ts          All gallery image/video content lives here
+  constants/
+    intro.ts            Keys shared between IntroSplash and SiteShell
+public/
+  images/               All static images (hero, logo, gallery)
+schema.sql              Neon database setup script
+```

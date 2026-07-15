@@ -1,5 +1,22 @@
 'use client'
 
+// Decorative puzzle-piece border — renders a ring of interlocking SVG puzzle pieces
+// around the edge of whichever container it's placed in.
+//
+// Two scopes:
+//   scope="viewport" — absolute-positioned, covers the entire About/Gallery hero section.
+//                      Only shows on md+ screens (hidden md:block).
+//   scope="card"     — frames a smaller element like an image or video card (absolute inset-0).
+//                      Requires the parent to have `position: relative` and the
+//                      PUZZLE_CARD_INSET padding constant applied (exported below).
+//
+// Piece count is calculated from the container's measured dimensions via ResizeObserver
+// so it works at any screen size without hard-coding rows/columns.
+// The green palette (GALLERY_COLORS) is intentional — matches the school's branding.
+//
+// You shouldn't need to touch this file unless you want to change the colour palette
+// or the physical size of the pieces (PIECE_SIZE / TAB_RADIUS / TAB_DEPTH constants).
+
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 type Edge = 'flat' | 'tab' | 'blank'

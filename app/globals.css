@@ -1,3 +1,8 @@
+/* globals.css — project-wide styles loaded by app/layout.tsx.
+ * Keep this lean: layout colours live on the <body> in layout.tsx via Tailwind classes,
+ * and component-specific styles belong with their component. Only things that genuinely
+ * need to be global (custom animations, the .input utility, carousel helpers) go here. */
+
 @import "tailwindcss";
 
 :root {
@@ -11,6 +16,8 @@
   --font-sans: var(--font-fredoka);
 }
 
+/* Dark mode vars are kept here from the Next.js default but are effectively unused —
+ * layout.tsx forces bg-gray-50 and text-gray-900 on the body, which overrides these. */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -18,7 +25,8 @@
   }
 }
 
-/* Background/colors come from layout.tsx Tailwind classes — avoid overriding with dark-mode black */
+/* ── Page transition ────────────────────────────────────────────────────────── */
+/* Used by app/template.tsx on client-side navigations (not the initial intro splash). */
 
 @keyframes page-fade-in {
   from {
@@ -32,4 +40,68 @@
 .animate-page-fade-in {
   opacity: 0;
   animation: page-fade-in 0.7s ease-out forwards;
+}
+
+/* ── Form inputs ────────────────────────────────────────────────────────────── */
+/* Shared .input class used on all form fields across the contact and leave-review pages.
+ * Defined here rather than inline so both pages stay consistent without copy-pasting. */
+
+.input {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 0.625rem;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.9375rem;
+  color: #111827;
+  background-color: #f9fafb;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  font-family: inherit;
+}
+
+.input:focus {
+  border-color: #0ea5e9;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+  background-color: #ffffff;
+}
+
+/* ── Reviews carousel ──────────────────────────────────────────────────────── */
+/* .no-scrollbar hides the horizontal scrollbar on the review track while keeping
+ * it scrollable. .star-half paints only the left 50% of a ★ yellow for half-star ratings. */
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Half-star: left 50% painted yellow-400, right half stays dim */
+.star-half {
+  position: relative;
+}
+.star-half::before {
+  content: '★';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  overflow: hidden;
+  color: #facc15; /* yellow-400 */
+}
+
+/* ── Chatbot ────────────────────────────────────────────────────────────────── */
+/* Slide-up animation for the chat panel when it opens — applied via
+ * animate-[chatbot-slide-up_0.25s_ease] inside ChatbotWidget.tsx. */
+
+@keyframes chatbot-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }

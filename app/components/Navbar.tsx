@@ -1,4 +1,9 @@
 'use client'
+
+// Fixed top navigation bar — sky-700 background, logo + school name on the left,
+// page links on the right. Active link gets a yellow underline so it's clear where you are.
+// Add or rename pages by editing the NavLinks array below.
+
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'

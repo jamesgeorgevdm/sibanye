@@ -1,5 +1,14 @@
 'use client'
 
+// First-visit logo splash — only shows on the home page (/) and only once per browser session.
+// Timeline:
+//   0ms   — component mounts, starts invisible
+//   50ms  — fades in (gives React a frame to paint before animating)
+//   2500ms — fires INTRO_COMPLETE_EVENT so SiteShell starts fading in, then fades out
+//   3500ms — unmounts and sets the localStorage flag so it never shows again
+//
+// Lives outside SiteShell in layout.tsx so it can overlay everything at z-9999.
+
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { INTRO_COMPLETE_EVENT, INTRO_STORAGE_KEY } from '../constants/intro'

@@ -1,5 +1,13 @@
 'use client'
 
+// Image slideshow used for each photo album on the Gallery page.
+// Displays one image at a time inside a PuzzleBorder frame, with
+// Previous/Next buttons and a row of thumbnail buttons below.
+//
+// The `variant` prop alternates the section background between white and gray-50
+// so adjacent albums are visually separated. The gallery page handles the alternation
+// — just pass the album object from app/data/gallery.ts.
+
 import Image from 'next/image'
 import { useCallback, useState } from 'react'
 import type { GalleryAlbum } from '../data/gallery'
@@ -32,7 +40,7 @@ export default function GallerySlideshow({
 
   return (
     <section className={`${bgClass} py-12 md:py-16 border-t border-gray-200`}>
-      <div className="w-full max-w-4xl mx-auto px-6">
+      <div className="w-full max-w-2xl mx-auto px-6">
         <header className="mb-8 md:mb-10">
           <div className="w-12 h-1 bg-sky-700 mb-4 mx-auto md:mx-0" aria-hidden="true" />
           <h2 className="text-2xl sm:text-3xl font-bold text-sky-800 tracking-tight mb-2 text-center md:text-left">
@@ -52,7 +60,7 @@ export default function GallerySlideshow({
               alt={current.alt}
               fill
               className="object-cover"
-              sizes="(max-width: 768px) 100vw, 896px"
+              sizes="(max-width: 672px) 100vw, 672px"
               priority={index === 0}
             />
           </div>
