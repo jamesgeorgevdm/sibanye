@@ -26,19 +26,21 @@ export default function Hero() {
       {/* Hero text — centred in the viewport */}
       <div className="relative z-10 min-h-screen flex items-center justify-center">
         <div className="text-center px-6 pt-16 max-w-4xl mx-auto">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-4 text-sky-800">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight mb-6 text-sky-800">
             Sibanye Centre For Special Needs
           </h1>
 
-          <p className="text-lg sm:text-xl md:text-2xl text-sky-700 font-light mb-4 max-w-2xl mx-auto">
-            Empowering lives and supporting unique abilities.
-          </p>
+          <div className="bg-white/60 backdrop-blur-sm rounded-xl shadow-sm px-6 py-5 max-w-2xl mx-auto mb-10">
+            <p className="text-base sm:text-lg md:text-xl text-sky-700 font-semibold mb-3">
+              Empowering lives and supporting unique abilities.
+            </p>
 
-          <p className="text-base sm:text-lg text-sky-800/90 font-light mb-10 max-w-2xl mx-auto">
-            A special-needs day school and care centre in Newton Park, Gqeberha
-            (Port Elizabeth), supporting children and young adults with autism,
-            ADHD, Down syndrome and other learning disabilities.
-          </p>
+            <p className="text-sm sm:text-base text-sky-900">
+              A special-needs day school and care centre in Newton Park, Gqeberha
+              (Port Elizabeth), supporting children and young adults with autism,
+              ADHD, Down syndrome and other learning disabilities.
+            </p>
+          </div>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
