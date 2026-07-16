@@ -6,6 +6,7 @@
 // to keep the JSX clean without needing separate files for one-off presentational pieces.
 
 import { useState, FormEvent } from "react";
+import { business, mapEmbedSrc } from "../lib/business";
 
 type FormState = {
   name: string;
@@ -84,7 +85,11 @@ export default function ContactPage() {
               </svg>
             }
             title="Address"
-            lines={["17 3rd Avenue", "Newton Park", "Gqeberha, 6070"]}
+            lines={[
+              business.address.street,
+              business.address.suburb,
+              `${business.address.city}, ${business.address.postalCode}`,
+            ]}
           />
           <InfoCard
             icon={
@@ -93,7 +98,15 @@ export default function ContactPage() {
               </svg>
             }
             title="Phone"
-            lines={["041 065 0012 (Landline)", "060 723 0480 (School)"]}
+            lines={business.phones.map((phone) => (
+              <a
+                key={phone.href}
+                href={phone.href}
+                className="hover:text-sky-700 hover:underline"
+              >
+                {phone.display} ({phone.label})
+              </a>
+            ))}
           />
           <InfoCard
             icon={
@@ -102,7 +115,15 @@ export default function ContactPage() {
               </svg>
             }
             title="Email"
-            lines={["sibanye.specialneeds@gmail.com"]}
+            lines={[
+              <a
+                key="email"
+                href={`mailto:${business.email}`}
+                className="hover:text-sky-700 hover:underline break-all"
+              >
+                {business.email}
+              </a>,
+            ]}
           />
           <InfoCard
             icon={
@@ -240,8 +261,8 @@ export default function ContactPage() {
       {/* Map embed */}
       <div className="w-full h-72 bg-gray-200">
         <iframe
-          title="Sibanye Centre location"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3311.4!2d25.5766!3d-33.9608!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e7ad5b5b5b5b5b5%3A0x0!2s17+3rd+Ave%2C+Newton+Park%2C+Gqeberha%2C+6070!5e0!3m2!1sen!2sza!4v1"
+          title="Map showing Sibanye Centre For Special Needs in Newton Park, Gqeberha"
+          src={mapEmbedSrc}
           width="100%"
           height="100%"
           style={{ border: 0 }}
@@ -281,7 +302,7 @@ function InfoCard({
 }: {
   icon: React.ReactNode;
   title: string;
-  lines: string[];
+  lines: React.ReactNode[];
 }) {
   return (
     <div className="flex items-start gap-4 bg-white rounded-xl shadow-sm p-5 border border-gray-100">

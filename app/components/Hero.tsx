@@ -30,8 +30,14 @@ export default function Hero() {
             Sibanye Centre For Special Needs
           </h1>
 
-          <p className="text-lg sm:text-xl md:text-2xl text-sky-700 font-light mb-10 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl md:text-2xl text-sky-700 font-light mb-4 max-w-2xl mx-auto">
             Empowering lives and supporting unique abilities.
+          </p>
+
+          <p className="text-base sm:text-lg text-sky-800/90 font-light mb-10 max-w-2xl mx-auto">
+            A special-needs day school and care centre in Newton Park, Gqeberha
+            (Port Elizabeth), supporting children and young adults with autism,
+            ADHD, Down syndrome and other learning disabilities.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4">

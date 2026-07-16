@@ -1,5 +1,9 @@
 // Site-wide footer — school identity on the left, contact details on the right.
 // Sits inside SiteShell so it only appears once the intro animation has finished.
+// Contact details come from app/lib/business.ts so the NAP stays consistent
+// with the Contact page and the JSON-LD structured data.
+
+import { business, addressLine } from "../lib/business";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -22,18 +26,33 @@ export default function Footer() {
           </div>
 
           {/* Section Right: Contact Details */}
-          <div className="text-left md:text-right shrink-0">
+          <address className="text-left md:text-right shrink-0 not-italic">
             <h3 className="text-white font-medium text-xs uppercase tracking-wider mb-1">
               Contact Office
             </h3>
             <p className="text-xs text-white leading-normal">
-              17 3rd Avenue, Newton Park, Gqeberha, 6070 <br />
-              <span className="md:block">Emal: sibanye.specialneeds@gmail.com</span> 
+              {addressLine} <br />
+              <span className="md:block">
+                Email:{" "}
+                <a href={`mailto:${business.email}`} className="underline hover:text-yellow-300">
+                  {business.email}
+                </a>
+              </span>
               <span className="hidden md:inline"> • </span>
-              <span>Phone: 041 065 0012 (Landline)
-              <br /> 060 723 0480 (School)</span>
+              <span>
+                Phone:{" "}
+                {business.phones.map((phone, i) => (
+                  <span key={phone.href}>
+                    {i > 0 && <br />}
+                    <a href={phone.href} className="underline hover:text-yellow-300">
+                      {phone.display}
+                    </a>{" "}
+                    ({phone.label})
+                  </span>
+                ))}
+              </span>
             </p>
-          </div>
+          </address>
 
         </div>
 

@@ -23,6 +23,7 @@ import Footer from "./components/Footer";
 import IntroSplash from "./components/IntroSplash";
 import SiteShell from "./components/SiteShell";
 import ChatbotWidget from "./components/ChatbotWidget";
+import StructuredData from "./components/StructuredData";
 
 const fredoka = Fredoka({
   subsets: ["latin"],
@@ -50,6 +51,7 @@ export default function RootLayout({
 
         <IntroSplash />
         <ChatbotWidget />
+        <StructuredData />
       </body>
     </html>
   );
