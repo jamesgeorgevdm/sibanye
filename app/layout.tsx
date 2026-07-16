@@ -24,6 +24,7 @@ import IntroSplash from "./components/IntroSplash";
 import SiteShell from "./components/SiteShell";
 import ChatbotWidget from "./components/ChatbotWidget";
 import StructuredData from "./components/StructuredData";
+import { SITE_URL } from "./lib/site";
 
 const fredoka = Fredoka({
   subsets: ["latin"],
@@ -31,8 +32,26 @@ const fredoka = Fredoka({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Sibanye Centre For Special Needs",
   description: "Empowering lives and supporting unique abilities.",
+  openGraph: {
+    type: "website",
+    locale: "en_ZA",
+    url: "/",
+    siteName: "Sibanye Centre For Special Needs",
+    title: "Sibanye Centre For Special Needs",
+    description:
+      "A special-needs day school and care centre in Newton Park, Gqeberha, supporting children and young adults with unique learning needs.",
+    images: [
+      {
+        url: "/images/hero.jpg",
+        width: 1024,
+        height: 683,
+        alt: "Sibanye Centre For Special Needs in Newton Park, Gqeberha",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({

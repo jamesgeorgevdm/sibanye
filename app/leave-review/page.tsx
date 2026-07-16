@@ -6,11 +6,19 @@
 // The Suspense fallback shows a spinner while the client bundle loads.
 
 import { Suspense } from 'react';
+import type { Metadata } from 'next';
 import LeaveReviewContent from './LeaveReviewContent';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Leave a Review | Sibanye Centre For Special Needs',
   description: 'Share your experience with Sibanye Centre For Special Needs.',
+  alternates: {
+    canonical: '/leave-review',
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function LeaveReviewPage() {

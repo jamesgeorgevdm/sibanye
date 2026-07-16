@@ -3,12 +3,33 @@
 // To update facts like learner count or founding year, edit the `stats` array below.
 // To add or remove activity/value cards, edit `activities` or `coreValues`.
 
+import type { Metadata } from 'next'
 import PuzzleBorder from '../components/PuzzleBorder'
 import AboutNav from '../components/AboutNav'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'About | Sibanye Centre For Special Needs',
   description: 'Learn about Sibanye Centre For Special Needs — our mission, story, values and approach.',
+  alternates: {
+    canonical: '/about',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_ZA',
+    url: '/about',
+    siteName: 'Sibanye Centre For Special Needs',
+    title: 'About | Sibanye Centre For Special Needs',
+    description:
+      'Learn about our mission, story, values and approach to supporting children and young adults with special needs in Gqeberha.',
+    images: [
+      {
+        url: '/images/hero.jpg',
+        width: 1024,
+        height: 683,
+        alt: 'Sibanye Centre For Special Needs in Newton Park, Gqeberha',
+      },
+    ],
+  },
 }
 
 // ─── Data ─────────────────────────────────────────────────────────────────────

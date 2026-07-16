@@ -1,14 +1,14 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "./lib/site";
 
-// Served at /robots.txt. Public pages are crawlable; API routes and the
-// token-gated review page are excluded from indexing.
+// Served at /robots.txt. API routes are not crawlable. The token-gated review
+// page remains crawlable so search engines can see its explicit noindex tag.
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/", "/leave-review"],
+      disallow: "/api/",
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
     host: SITE_URL,

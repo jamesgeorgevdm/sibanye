@@ -2,15 +2,36 @@
 // Albums alternate between light and muted backgrounds for visual separation.
 // All content (images and videos) is sourced from app/data/gallery.ts.
 
+import type { Metadata } from 'next'
 import GallerySlideshow from '../components/GallerySlideshow'
 import GalleryVideoShowcase from '../components/GalleryVideoShowcase'
 import GalleryNav from '../components/GalleryNav'
 import PuzzleBorder from '../components/PuzzleBorder'
 import { galleryAlbums, videoShowcase } from '../data/gallery'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Gallery | Sibanye Centre For Special Needs',
   description: 'Photos from life at Sibanye and our events and celebrations.',
+  alternates: {
+    canonical: '/gallery',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_ZA',
+    url: '/gallery',
+    siteName: 'Sibanye Centre For Special Needs',
+    title: 'Gallery | Sibanye Centre For Special Needs',
+    description:
+      'See photos from daily life, activities, events and celebrations at Sibanye Centre For Special Needs in Gqeberha.',
+    images: [
+      {
+        url: '/images/hero.jpg',
+        width: 1024,
+        height: 683,
+        alt: 'Sibanye Centre For Special Needs in Newton Park, Gqeberha',
+      },
+    ],
+  },
 }
 
 export default function GalleryPage() {
