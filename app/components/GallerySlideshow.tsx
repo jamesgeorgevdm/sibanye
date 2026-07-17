@@ -40,7 +40,7 @@ export default function GallerySlideshow({
 
   return (
     <section className={`${bgClass} py-12 md:py-16 border-t border-gray-200`}>
-      <div className="w-full max-w-2xl mx-auto px-6">
+      <div className="w-full max-w-xl mx-auto px-6">
         <header className="mb-8 md:mb-10">
           <div className="w-12 h-1 bg-sky-700 mb-4 mx-auto md:mx-0" aria-hidden="true" />
           <h2 className="text-2xl sm:text-3xl font-bold text-sky-800 tracking-tight mb-2 text-center md:text-left">
@@ -60,7 +60,7 @@ export default function GallerySlideshow({
               alt={current.alt}
               fill
               className="object-cover"
-              sizes="(max-width: 672px) 100vw, 672px"
+              sizes="(max-width: 576px) 100vw, 576px"
               priority={index === 0}
             />
           </div>

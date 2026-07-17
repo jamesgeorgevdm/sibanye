@@ -33,16 +33,16 @@ const Navbar = () => {
           <Link
             href="/"
             onClick={closeMenu}
-            className="flex items-center gap-3 shrink-0 hover:opacity-90 transition"
+            className="flex items-center gap-2 md:gap-3 min-w-0 hover:opacity-90 transition"
           >
             <Image
               src="/images/logo_small.jpg"
               alt=""
               width={40}
               height={40}
-              className="h-10 w-10 object-contain"
+              className="h-9 w-9 md:h-10 md:w-10 object-contain shrink-0"
             />
-            <span className="font-bold text-xl tracking-tight leading-tight">
+            <span className="font-bold text-sm sm:text-base md:text-xl tracking-tight leading-tight">
               Sibanye Centre For Special Needs
             </span>
           </Link>

@@ -7,6 +7,7 @@ import GallerySlideshow from '../components/GallerySlideshow'
 import GalleryVideoShowcase from '../components/GalleryVideoShowcase'
 import GalleryNav from '../components/GalleryNav'
 import PuzzleBorder from '../components/PuzzleBorder'
+import VideoStructuredData from '../components/VideoStructuredData'
 import { galleryAlbums, videoShowcase } from '../data/gallery'
 
 export const metadata: Metadata = {
@@ -37,6 +38,7 @@ export const metadata: Metadata = {
 export default function GalleryPage() {
   return (
     <div className="-mt-16">
+      <VideoStructuredData showcase={videoShowcase} />
       <section className="relative bg-sky-700 text-white pt-16 overflow-hidden">
         <PuzzleBorder scope="viewport" />
         <div className="relative z-10 max-w-4xl mx-auto text-center px-6 py-14 md:py-16">
@@ -51,11 +53,13 @@ export default function GalleryPage() {
 
       <GalleryNav />
 
-      {galleryAlbums.map((album, i) => (
-        <div key={album.id} id={album.id}>
-          <GallerySlideshow album={album} variant={i % 2 === 0 ? 'light' : 'muted'} />
-        </div>
-      ))}
+      <div className="grid grid-cols-1 lg:grid-cols-2">
+        {galleryAlbums.map((album, i) => (
+          <div key={album.id} id={album.id}>
+            <GallerySlideshow album={album} variant={i % 2 === 0 ? 'light' : 'muted'} />
+          </div>
+        ))}
+      </div>
 
       <div id={videoShowcase.id}>
         <GalleryVideoShowcase showcase={videoShowcase} variant="light" />

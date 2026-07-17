@@ -20,6 +20,10 @@ export type GalleryVideo = {
   src: string
   title: string
   poster?: string
+  /** Short description used on-page and for VideoObject structured data (SEO). */
+  description?: string
+  /** ISO 8601 date the video was recorded/uploaded — required by Google's VideoObject. */
+  uploadDate?: string
 }
 
 export type VideoShowcase = {
@@ -72,6 +76,45 @@ export const videoShowcase: VideoShowcase = {
   title: 'Video Showcase',
   description: 'Watch highlights from life at the centre.',
   videos: [
-    // { src: '/images/gallery/videos/example.mp4', title: 'Centre highlights', poster: '/images/gallery/life/sibanye_play_outside.jpg' },
+    {
+      src: '/images/gallery/videos/classical-music-rhythm-little-ones.mp4',
+      title: 'Little Ones: Classical Music Rhythm Exercise',
+      poster: '/images/gallery/videos/Thumbnail_Classical.webp',
+      description:
+        'An age-appropriate rhythm activity that helps our youngest learners build attention, listening skills, and early musical and aural awareness.',
+      uploadDate: '2024-11-01',
+    },
+    {
+      src: '/images/gallery/videos/tchaikovsky-rhythm-game-little-ones.mp4',
+      title: 'Little Ones: Tchaikovsky Rhythm Game',
+      poster: '/images/gallery/videos/Thumbnail_Tchaikovsky.webp',
+      description:
+        'A higher-level rhythm game that adds body percussion, closer synchronisation with the beat, and quick adaptation between instruments.',
+      uploadDate: '2024-11-01',
+    },
+    {
+      src: '/images/gallery/videos/kheti-no-one-alicia-keys.mp4',
+      title: 'Piano Learner: “No One” by Alicia Keys',
+      poster: '/images/gallery/videos/Thumbnail_Kheti.webp',
+      description:
+        "A solo voice-and-piano performance showcasing one learner's grasp of chords and voicing while singing and playing at the same time.",
+      uploadDate: '2024-11-01',
+    },
+    {
+      src: '/images/gallery/videos/your-song-older-class.mp4',
+      title: 'Older Class: Your Song',
+      poster: '/images/gallery/videos/Thumbnail_YourSong.webp',
+      description:
+        'A vocal ensemble piece that nurtures social bonding, musical give-and-take, and memory through learning and performing the lyrics together.',
+      uploadDate: '2024-11-01',
+    },
+    {
+      src: '/images/gallery/videos/johnny-clegg-medley.mp4',
+      title: 'Combined Classes: Johnny Clegg Medley',
+      poster: '/images/gallery/videos/Thumbnail_Johnny.webp',
+      description:
+        'A combined-class medley showcasing our learners adapting to shifting styles and tempos, with an added body-percussion element.',
+      uploadDate: '2024-11-01',
+    },
   ],
 }
