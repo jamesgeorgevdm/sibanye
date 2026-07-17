@@ -23,14 +23,15 @@ export default function Hero() {
       {/* Green tint overlay */}
       <div className="absolute inset-0 bg-green-100/55" aria-hidden="true" />
 
-      {/* Hero text — centred in the viewport */}
-      <div className="relative z-10 min-h-screen flex items-center justify-center">
-        <div className="text-center px-6 pt-16 max-w-4xl mx-auto">
+      {/* Hero text + Reviews — centred together in the viewport so the reviews
+          sit just below the CTAs rather than a full screen down. */}
+      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center pt-16 pb-8">
+        <div className="text-center px-6 max-w-4xl mx-auto">
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight mb-6 text-sky-800">
             Sibanye Centre For Special Needs
           </h1>
 
-          <div className="bg-white/60 backdrop-blur-sm rounded-xl shadow-sm px-6 py-5 max-w-2xl mx-auto mb-10">
+          <div className="bg-white/60 backdrop-blur-sm rounded-xl shadow-sm px-6 py-5 max-w-2xl mx-auto mb-8">
             <p className="text-base sm:text-lg md:text-xl text-sky-700 font-semibold mb-3">
               Empowering lives and supporting unique abilities.
             </p>
@@ -52,11 +53,11 @@ export default function Hero() {
             <OpenChatButton />
           </div>
         </div>
-      </div>
 
-      {/* Reviews — below the hero text, same background */}
-      <div className="relative z-10">
-        <Reviews overlay />
+        {/* Reviews — same background, directly beneath the CTAs */}
+        <div className="w-full">
+          <Reviews overlay />
+        </div>
       </div>
     </section>
   )
