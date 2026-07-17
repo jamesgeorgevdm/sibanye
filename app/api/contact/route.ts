@@ -49,11 +49,11 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { name, email, phone, subject, message, company } = body;
+  const { name, email, phone, subject, message, hpField } = body;
 
-  // Honeypot: a hidden field named "company". Bots fill it, humans can't see it.
+  // Honeypot: a hidden field. Bots fill it, humans can't see it.
   // Pretend success so bots don't learn they were caught.
-  if (company) {
+  if (hpField) {
     console.log("[contact] Honeypot triggered — no email sent. ip:", ip);
     return NextResponse.json({ success: true }, { status: 200 });
   }

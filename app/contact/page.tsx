@@ -14,7 +14,7 @@ type FormState = {
   phone: string;
   subject: string;
   message: string;
-  company: string; // honeypot — must stay empty; hidden from real users
+  hpField: string; // honeypot — must stay empty; hidden from real users
 };
 
 type Status = "idle" | "loading" | "success" | "error";
@@ -26,7 +26,7 @@ export default function ContactPage() {
     phone: "",
     subject: "",
     message: "",
-    company: "",
+    hpField: "",
   });
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
@@ -57,7 +57,7 @@ export default function ContactPage() {
           phone: "",
           subject: "",
           message: "",
-          company: "",
+          hpField: "",
         });
       } else {
         const data = await res.json();
@@ -175,7 +175,10 @@ export default function ContactPage() {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Honeypot: hidden from users, off-screen and not tabbable.
-                  Bots that auto-fill fields will trip this and get silently dropped. */}
+                  Bots that auto-fill fields will trip this and get silently dropped.
+                  The field is deliberately NOT named "company"/"organization" etc,
+                  and carries data-*-ignore attributes, so browsers and password
+                  managers won't autofill it and trip up real visitors. */}
               <div
                 aria-hidden="true"
                 style={{
@@ -186,15 +189,18 @@ export default function ContactPage() {
                   overflow: "hidden",
                 }}
               >
-                <label htmlFor="company">Company (leave this empty)</label>
+                <label htmlFor="hp-field">Leave this field empty</label>
                 <input
                   type="text"
-                  id="company"
-                  name="company"
-                  value={form.company}
+                  id="hp-field"
+                  name="hpField"
+                  value={form.hpField}
                   onChange={handleChange}
                   tabIndex={-1}
                   autoComplete="off"
+                  data-lpignore="true"
+                  data-1p-ignore
+                  data-form-type="other"
                 />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
