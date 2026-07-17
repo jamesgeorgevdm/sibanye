@@ -14,6 +14,7 @@ type FormState = {
   phone: string;
   subject: string;
   message: string;
+  company: string; // honeypot — must stay empty; hidden from real users
 };
 
 type Status = "idle" | "loading" | "success" | "error";
@@ -25,6 +26,7 @@ export default function ContactPage() {
     phone: "",
     subject: "",
     message: "",
+    company: "",
   });
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
@@ -49,7 +51,14 @@ export default function ContactPage() {
 
       if (res.ok) {
         setStatus("success");
-        setForm({ name: "", email: "", phone: "", subject: "", message: "" });
+        setForm({
+          name: "",
+          email: "",
+          phone: "",
+          subject: "",
+          message: "",
+          company: "",
+        });
       } else {
         const data = await res.json();
         setErrorMsg(data.error || "Something went wrong.");
@@ -165,6 +174,29 @@ export default function ContactPage() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Honeypot: hidden from users, off-screen and not tabbable.
+                  Bots that auto-fill fields will trip this and get silently dropped. */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  left: "-9999px",
+                  width: "1px",
+                  height: "1px",
+                  overflow: "hidden",
+                }}
+              >
+                <label htmlFor="company">Company (leave this empty)</label>
+                <input
+                  type="text"
+                  id="company"
+                  name="company"
+                  value={form.company}
+                  onChange={handleChange}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <Field label="Full Name" required>
                   <input
@@ -173,6 +205,7 @@ export default function ContactPage() {
                     value={form.name}
                     onChange={handleChange}
                     required
+                    maxLength={100}
                     placeholder="Jane Smith"
                     className="input"
                   />
@@ -184,6 +217,7 @@ export default function ContactPage() {
                     value={form.email}
                     onChange={handleChange}
                     required
+                    maxLength={254}
                     placeholder="jane@example.com"
                     className="input"
                   />
@@ -197,6 +231,7 @@ export default function ContactPage() {
                     name="phone"
                     value={form.phone}
                     onChange={handleChange}
+                    maxLength={40}
                     placeholder="+27 (0)41 000 0000"
                     className="input"
                   />
@@ -224,6 +259,7 @@ export default function ContactPage() {
                   value={form.message}
                   onChange={handleChange}
                   required
+                  maxLength={5000}
                   rows={5}
                   placeholder="Write your message here…"
                   className="input resize-none"

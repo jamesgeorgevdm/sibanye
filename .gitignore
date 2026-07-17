@@ -36,11 +36,6 @@ yarn-error.log*
 # vercel
 .vercel
 
-# large media — videos are hosted externally (too big for git/GitHub 100MB limit)
-public/images/gallery/videos/*.mp4
-public/images/gallery/videos/*.mov
-public/images/gallery/videos/*.webm
-
 # typescript
 *.tsbuildinfo
 next-env.d.ts

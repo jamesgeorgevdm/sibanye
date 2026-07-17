@@ -1,8 +1,10 @@
 // POST /api/chat — streams responses from Google Gemini 2.5 Flash via the Vercel AI SDK.
 //
-// Rate limiting: 30 messages per IP per hour, tracked in a plain in-memory Map.
-// This resets if the server cold-starts (fine for now — it's a lightweight chatbot).
-// If abuse becomes an issue, swap this out for an upstash/redis-based rate limiter.
+// Rate limiting: 30 messages per IP per hour, plus hard caps on the number and
+// size of messages in a single request. This is a best-effort in-memory limiter
+// (see app/lib/security.ts) — enough to blunt casual abuse of the Gemini API and
+// keep costs bounded. For strong protection against distributed abuse, move to an
+// Upstash/Redis-backed limiter.
 //
 // Requires GOOGLE_GENERATIVE_AI_API_KEY in .env.local.
 // Returns 503 (not 500) when the key is missing so the client knows it's a config issue.
@@ -10,22 +12,29 @@
 import { streamText, convertToModelMessages } from "ai";
 import { google } from "@ai-sdk/google";
 import { NextRequest } from "next/server";
+import { getClientIp, rateLimit } from "@/app/lib/security";
 
-// Simple in-memory rate limiter: 30 requests per hour per IP
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const WINDOW_MS = 60 * 60 * 1000;
 const MAX_REQUESTS = 30;
 
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return true;
+// Per-request payload caps to keep token usage (and cost) bounded.
+const MAX_MESSAGES = 40;
+const MAX_TOTAL_CHARS = 20000;
+
+function getMessagesText(messages: unknown[]): string {
+  let text = "";
+  for (const m of messages) {
+    const parts = (m as { parts?: unknown[] })?.parts;
+    if (Array.isArray(parts)) {
+      for (const p of parts) {
+        const t = (p as { text?: unknown })?.text;
+        if (typeof t === "string") text += t;
+      }
+    }
+    const content = (m as { content?: unknown })?.content;
+    if (typeof content === "string") text += content;
   }
-  if (entry.count >= MAX_REQUESTS) return false;
-  entry.count++;
-  return true;
+  return text;
 }
 
 const SYSTEM_PROMPT = `
@@ -127,12 +136,9 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0] ??
-    req.headers.get("x-real-ip") ??
-    "unknown";
+  const ip = getClientIp(req);
 
-  if (!checkRateLimit(ip)) {
+  if (!rateLimit("chat", ip, MAX_REQUESTS, WINDOW_MS)) {
     return Response.json(
       {
         success: false,
@@ -145,6 +151,24 @@ export async function POST(req: NextRequest) {
 
   try {
     const { messages } = await req.json();
+
+    if (!Array.isArray(messages) || messages.length === 0) {
+      return Response.json({ error: "Invalid request." }, { status: 400 });
+    }
+
+    if (messages.length > MAX_MESSAGES) {
+      return Response.json(
+        { error: "Conversation is too long. Please start a new chat." },
+        { status: 400 }
+      );
+    }
+
+    if (getMessagesText(messages).length > MAX_TOTAL_CHARS) {
+      return Response.json(
+        { error: "Message is too long." },
+        { status: 400 }
+      );
+    }
 
     const result = streamText({
       model: google("gemini-2.5-flash"),

@@ -17,10 +17,6 @@ type GalleryVideoShowcaseProps = {
   variant?: 'light' | 'muted'
 }
 
-// Some clips were recorded quite loud, so start playback at a gentler level.
-// Viewers can still raise it with the native volume control.
-const DEFAULT_VOLUME = 0.5
-
 export default function GalleryVideoShowcase({
   showcase,
   variant = 'muted',
@@ -63,9 +59,6 @@ export default function GalleryVideoShowcase({
                 playsInline
                 preload="metadata"
                 poster={current.poster}
-                onLoadedMetadata={(e) => {
-                  e.currentTarget.volume = DEFAULT_VOLUME
-                }}
                 className="w-full h-full object-contain bg-black"
                 aria-label={current.title}
               >
