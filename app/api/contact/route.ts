@@ -54,6 +54,7 @@ export async function POST(req: NextRequest) {
   // Honeypot: a hidden field named "company". Bots fill it, humans can't see it.
   // Pretend success so bots don't learn they were caught.
   if (company) {
+    console.log("[contact] Honeypot triggered — no email sent. ip:", ip);
     return NextResponse.json({ success: true }, { status: 200 });
   }
 
@@ -166,7 +167,17 @@ export async function POST(req: NextRequest) {
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+    const info = await transporter.sendMail(mailOptions);
+    console.log(
+      "[contact] Email sent. messageId:",
+      info.messageId,
+      "response:",
+      info.response,
+      "accepted:",
+      info.accepted,
+      "rejected:",
+      info.rejected
+    );
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
     console.error("Email send error:", error);
